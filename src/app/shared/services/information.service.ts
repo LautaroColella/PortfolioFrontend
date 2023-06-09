@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { TableInfoRes } from '../interfaces/tableInfoRes.interface';
+import { TableInfoRes } from '@@shared/interfaces/tableInfoRes.interface';
 import { environment } from '@app/../src/environments/environment.prod';
 
 @Injectable({
