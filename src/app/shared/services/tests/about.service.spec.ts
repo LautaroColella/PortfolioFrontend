@@ -28,118 +28,118 @@ describe('AboutService', () => {
 		httpTestingController.verify();
 	});
 
+	describe('getItems()', () => {
+		it('should send a GET request, return the items and update the cached items', () => {
+			const responseItems = [
+				{
+					id: 1,
+					item_type: 1,
+					name: 'Valid data',
+					date: 'Valid data',
+					description: 'Valid data',
+					link: 'Valid data',
+					image_uri: 'Valid data',
+					image_alt: 'Valid data'
+				},
+				{
+					id: 2,
+					item_type: 1,
+					name: 'Valid data',
+					date: 'Valid data',
+					description: 'Valid data',
+					link: 'Valid data',
+					image_uri: 'Valid data',
+					image_alt: 'Valid data'
+				}
+			];
 
-	it('should send a GET request and update the cached items if it is null', () => {
-		const responseItems = [
-			{
-				id: 1,
-				item_type: 1,
-				name: 'Valid data',
-				date: 'Valid data',
-				description: 'Valid data',
-				link: 'Valid data',
-				image_uri: 'Valid data',
-				image_alt: 'Valid data'
-			},
-			{
-				id: 2,
-				item_type: 1,
-				name: 'Valid data',
-				date: 'Valid data',
-				description: 'Valid data',
-				link: 'Valid data',
-				image_uri: 'Valid data',
-				image_alt: 'Valid data'
-			}
-		];
+			spyOn(service, 'getItems').and.callThrough();
 
-		spyOn(service, 'getItems').and.callThrough();
+			service.getItems().subscribe((response: HttpResponse<TableAboutItemRes[]>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(Array.isArray(response.body))
+					.withContext('Expect the response body to be an array')
+					.toBe(true);
+				expect(response.body)
+					.withContext('Expect the response objects to match the interface')
+					.toContain(
+						jasmine.objectContaining({
+							id: jasmine.any(Number),
+							item_type: jasmine.any(Number),
+							name: jasmine.any(String),
+							date: jasmine.any(String),
+							description: jasmine.any(String)
+						})
+					);
+			});
 
-		service.getItems().subscribe((response: HttpResponse<TableAboutItemRes[]>) => {
-			expect(response.status)
-				.withContext('Expect the response status to be 200')
-				.toBe(200);
-			expect(Array.isArray(response.body))
-				.withContext('Expect the response body to be an array')
-				.toBe(true);
-			expect(response.body)
-				.withContext('Expect the response objects to match the interface')
-				.toContain(
-					jasmine.objectContaining({
-						id: jasmine.any(Number),
-						item_type: jasmine.any(Number),
-						name: jasmine.any(String),
-						date: jasmine.any(String),
-						description: jasmine.any(String)
-					})
-				);
+			expect(service.getItems)
+				.withContext('Expect the service to be called')
+				.toHaveBeenCalled();
+			expect(service.getItems)
+				.withContext('Expect the service to be called only once')
+				.toHaveBeenCalledTimes(1);
+
+			const req = httpTestingController.expectOne(service.uri);
+			expect(req.request.method)
+				.withContext('Expect the request method to be GET')
+				.toBe('GET');
+
+			req.flush(responseItems);
+
+			expect(service['cachedItems'])
+				.withContext('Expect the cached items to be the response items')
+				.toEqual(responseItems);
 		});
+		it('should return the cached items if they are not null', () => {
+			const cachedItems = [
+				{
+					id: 1,
+					item_type: 1,
+					name: 'Valid data',
+					date: 'Valid data',
+					description: 'Valid data',
+					link: 'Valid data',
+					image_uri: 'Valid data',
+					image_alt: 'Valid data'
+				},
+				{
+					id: 2,
+					item_type: 1,
+					name: 'Valid data',
+					date: 'Valid data',
+					description: 'Valid data',
+					link: 'Valid data',
+					image_uri: 'Valid data',
+					image_alt: 'Valid data'
+				}
+			];
+			service['cachedItems'] = cachedItems;
 
-		expect(service.getItems)
-			.withContext('Expect the service to be called')
-			.toHaveBeenCalled();
-		expect(service.getItems)
-			.withContext('Expect the service to be called only once')
-			.toHaveBeenCalledTimes(1);
+			spyOn(service, 'getItems').and.callThrough();
 
-		const req = httpTestingController.expectOne(service.uri);
-		expect(req.request.method)
-			.withContext('Expect the request method to be GET')
-			.toBe('GET');
+			service.getItems().subscribe((response: HttpResponse<TableAboutItemRes[]>) => {
+				expect(response.body)
+					.withContext('Expect the response body to be the cached items')
+					.toEqual(cachedItems);
+			});
 
-		req.flush(responseItems);
+			expect(service.getItems)
+				.withContext('Expect the service to be called')
+				.toHaveBeenCalled();
+			expect(service.getItems)
+				.withContext('Expect the service to be called only once')
+				.toHaveBeenCalledTimes(1);
 
-		expect(service['cachedItems'])
-			.withContext('Expect the cached items to be the response items')
-			.toEqual(responseItems);
-	});
-	it('should return the cached items if it is not null', () => {
-		const cachedItems = [
-			{
-				id: 1,
-				item_type: 1,
-				name: 'Valid data',
-				date: 'Valid data',
-				description: 'Valid data',
-				link: 'Valid data',
-				image_uri: 'Valid data',
-				image_alt: 'Valid data'
-			},
-			{
-				id: 2,
-				item_type: 1,
-				name: 'Valid data',
-				date: 'Valid data',
-				description: 'Valid data',
-				link: 'Valid data',
-				image_uri: 'Valid data',
-				image_alt: 'Valid data'
-			}
-		];
-		service['cachedItems'] = cachedItems;
-
-		spyOn(service, 'getItems').and.callThrough();
-
-		service.getItems().subscribe((response: HttpResponse<TableAboutItemRes[]>) => {
-			expect(response.body)
-				.withContext('Expect the response body to be the cached items')
+			expect(service['cachedItems'])
+				.withContext('Expect the cached items to not be modified')
 				.toEqual(cachedItems);
 		});
-
-		expect(service.getItems)
-			.withContext('Expect the service to be called')
-			.toHaveBeenCalled();
-		expect(service.getItems)
-			.withContext('Expect the service to be called only once')
-			.toHaveBeenCalledTimes(1);
-
-		expect(service['cachedItems'])
-			.withContext('Expect the cached items to not be modified')
-			.toEqual(cachedItems);
 	});
 
-
-	it('should send one GET request to the about_item/$id endpoint - Success', () => {
+	it('should send a GET request to specific item and return it (Branch: success)', () => {
 		const id: number = 1;
 
 		service.getItem(id).subscribe(
