@@ -7,6 +7,7 @@ import {
 	HttpResponse,
 	HttpErrorResponse
 } from '@angular/common/http';
+import { of } from 'rxjs';
 import { InformationService } from '@@shared/services/information.service';
 import { TableInfoRes } from '@@shared/interfaces/tableInfoRes.interface';
 
@@ -28,7 +29,23 @@ describe('InformationService', () => {
 		httpTestingController.verify();
 	});
 
-	it('should send one GET request to the information endpoint', () => {
+
+	it('should send a GET request and update the cached table if it is null', () => {
+		const responseTable = [
+			{
+				id: 1,
+				name: 'Random data',
+				information: 'Random data'
+			},
+			{
+				id: 2,
+				name: 'Random data',
+				information: 'Random data'
+			}
+		];
+
+		spyOn(service, 'getInformationTable').and.callThrough();
+
 		service.getInformationTable().subscribe((response: HttpResponse<TableInfoRes[]>) => {
 			expect(response.status)
 				.withContext('Expect the response status to be 200')
@@ -47,27 +64,60 @@ describe('InformationService', () => {
 				);
 		});
 
+		expect(service.getInformationTable)
+			.withContext('Expect the service to be called')
+			.toHaveBeenCalled();
+		expect(service.getInformationTable)
+			.withContext('Expect the service to be called only once')
+			.toHaveBeenCalledTimes(1);
+
 		const req = httpTestingController.expectOne(service.uri);
 		expect(req.request.method)
 			.withContext('Expect the request method to be GET')
 			.toBe('GET');
 
-		req.flush([
+		req.flush(responseTable);
+
+		expect(service['cachedTable'])
+			.withContext('Expect the cached table to be the response table')
+			.toEqual(responseTable);
+	});
+	it('should return the cached table if it is not null', () => {
+		const cachedTable = [
 			{
 				id: 1,
-				name: 'unknown name',
-				information: 'unknown information'
+				name: 'Random data',
+				information: 'Random data'
 			},
 			{
 				id: 2,
-				name: 'unknown name',
-				information: 'unknown information'
+				name: 'Random data',
+				information: 'Random data'
 			}
-		]);
+		];
+		service['cachedTable'] = cachedTable;
+
+		spyOn(service, 'getInformationTable').and.callThrough();
+
+		service.getInformationTable().subscribe((response: HttpResponse<TableInfoRes[]>) => {
+			expect(response.body)
+				.withContext('Expect the response body to be the cached table')
+				.toEqual(cachedTable);
+		});
+
+		expect(service.getInformationTable)
+			.withContext('Expect the service to be called')
+			.toHaveBeenCalled();
+		expect(service.getInformationTable)
+			.withContext('Expect the service to be called only once')
+			.toHaveBeenCalledTimes(1);
+
+		expect(service['cachedTable'])
+			.withContext('Expect the cached table to not be modified')
+			.toEqual(cachedTable);
 	});
 
-
-	it('should send one PUT request to the information endpoint - Success', () => {
+	it('should send one PUT request to the information/update endpoint - Success', () => {
 		const token: string = 'Bearer random generated jwt',
 		infoItem = {
 			id: 1,
@@ -118,9 +168,102 @@ describe('InformationService', () => {
 
 		req.flush(infoItem);
 	});
-	/*
-	make the two errors: bad token and bad request
-	also see if there's a way to make a descriptive statement
-	to differentiate between both errors in the same it block
-	*/
+
+	it('should send one PUT request to the information/update endpoint - Error bad token', () => {
+		const token: string = 'Bearer invalid jwt',
+		infoItem = {
+			id: 1,
+			name: 'Random name',
+			information: 'Random information'
+		};
+
+		service.editInformationTable(
+			token,
+			infoItem.id,
+			infoItem.name,
+			infoItem.information
+		).subscribe(
+			(response: HttpResponse<TableInfoRes>) => {
+				fail('Expected error response, but received success response');
+			},
+			(error: HttpErrorResponse) => {
+				expect(error.status)
+					.withContext('Expect the error status to be 401')
+					.toBe(401);
+			}
+		);
+
+		const req = httpTestingController.expectOne(`${service.uri}/update`);
+		expect(req.request.method)
+			.withContext('Expect the request method to be PUT')
+			.toBe('PUT');
+
+		const hasAuthHeader: boolean = req.request.headers.has('Authorization');
+		expect(hasAuthHeader)
+			.withContext('Expect the request headers to have Authorization')
+			.toBe(true);
+
+		if(hasAuthHeader){
+			expect(req.request.headers.get('Authorization'))
+				.withContext('Expect the request Authorization header to start with "Bearer "')
+				.toMatch(/^Bearer /);
+			expect(req.request.headers.get('Authorization'))
+				.withContext('Expect the request Authorization header to match the token')
+				.toEqual(token);
+		}
+
+		req.flush('', {
+			status: 401,
+			statusText: 'Unauthorized'
+		});
+	});
+
+	it('should send one PUT request to the information/update endpoint - Error bad item', () => {
+		const token: string = 'Bearer random jwt',
+		infoItem = {
+			id: 1,
+			name: 'Invalid name',
+			information: 'Invalid information'
+		};
+
+		service.editInformationTable(
+			token,
+			infoItem.id,
+			infoItem.name,
+			infoItem.information
+		).subscribe(
+			(response: HttpResponse<TableInfoRes>) => {
+				fail('Expected error response, but received success response');
+			},
+			(error: HttpErrorResponse) => {
+				expect(error.status)
+					.withContext('Expect the error status to be 400')
+					.toBe(400);
+			}
+		);
+
+		const req = httpTestingController.expectOne(`${service.uri}/update`);
+		expect(req.request.method)
+			.withContext('Expect the request method to be PUT')
+			.toBe('PUT');
+
+		const hasAuthHeader: boolean = req.request.headers.has('Authorization');
+		expect(hasAuthHeader)
+			.withContext('Expect the request headers to have Authorization')
+			.toBe(true);
+
+		if(hasAuthHeader){
+			expect(req.request.headers.get('Authorization'))
+				.withContext('Expect the request Authorization header to start with "Bearer "')
+				.toMatch(/^Bearer /);
+			expect(req.request.headers.get('Authorization'))
+				.withContext('Expect the request Authorization header to match the token')
+				.toEqual(token);
+		}
+
+		req.flush('', {
+			status: 400,
+			statusText: 'Bad Request'
+		});
+	});
 });
