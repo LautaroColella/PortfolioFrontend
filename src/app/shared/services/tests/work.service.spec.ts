@@ -153,34 +153,29 @@ describe('WorkService', () => {
 		it('should send a GET request to specific item and return it', () => {
 			const id: number = 1;
 
-			service.getItem(id).subscribe(
-				(response: HttpResponse<TableWorkItemRes>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-					expect(typeof response.body)
-						.withContext('Expect the response body to be an object')
-						.toBe('object');
-					expect(response.body)
-						.withContext('Expect the response object to match the interface')
-						.toEqual(
-							jasmine.objectContaining({
-								id: jasmine.any(Number),
-								name: jasmine.any(String),
-								date: jasmine.any(String),
-								technologies: jasmine.any(String),
-								description: jasmine.any(String),
-								code_uri: jasmine.any(String),
-								live_uri: jasmine.any(String),
-								image_uri: jasmine.any(String),
-								image_alt: jasmine.any(String)
-							})
-						);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			service.getItem(id).subscribe((response: HttpResponse<TableWorkItemRes>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(typeof response.body)
+					.withContext('Expect the response body to be an object')
+					.toBe('object');
+				expect(response.body)
+					.withContext('Expect the response object to match the interface')
+					.toEqual(
+						jasmine.objectContaining({
+							id: jasmine.any(Number),
+							name: jasmine.any(String),
+							date: jasmine.any(String),
+							technologies: jasmine.any(String),
+							description: jasmine.any(String),
+							code_uri: jasmine.any(String),
+							live_uri: jasmine.any(String),
+							image_uri: jasmine.any(String),
+							image_alt: jasmine.any(String)
+						})
+					);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uri}/${id}`);
 			expect(req.request.method)
@@ -228,19 +223,14 @@ describe('WorkService', () => {
 				workItem.technologies,
 				workItem.description,
 				workItem.itemData
-			).subscribe(
-				(response: HttpResponse<TableWorkItemRes>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-					expect(response.body)
-						.withContext('Expect the response body to be the item with id')
-						.toEqual(workItem);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			).subscribe((response: HttpResponse<TableWorkItemRes>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(response.body)
+					.withContext('Expect the response body to be the item with id')
+					.toEqual(workItem);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uri}/add`);
 			expect(req.request.method)
@@ -299,19 +289,14 @@ describe('WorkService', () => {
 				workItem.technologies,
 				workItem.description,
 				workItem.itemData
-			).subscribe(
-				(response: HttpResponse<TableWorkItemRes>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-					expect(response.body)
-						.withContext('Expect the response body to be the item with id')
-						.toEqual(workItem);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			).subscribe((response: HttpResponse<TableWorkItemRes>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(response.body)
+					.withContext('Expect the response body to be the item with id')
+					.toEqual(workItem);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uri}/add`);
 			expect(req.request.method)
@@ -373,19 +358,14 @@ describe('WorkService', () => {
 				workItem.technologies,
 				workItem.description,
 				workItem.itemData
-			).subscribe(
-				(response: HttpResponse<TableWorkItemRes>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-					expect(response.body)
-						.withContext('Expect the response body to be the item')
-						.toEqual(workItem);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			).subscribe((response: HttpResponse<TableWorkItemRes>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(response.body)
+					.withContext('Expect the response body to be the item')
+					.toEqual(workItem);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uri}/update`);
 			expect(req.request.method)
@@ -446,19 +426,14 @@ describe('WorkService', () => {
 				workItem.technologies,
 				workItem.description,
 				workItem.itemData
-			).subscribe(
-				(response: HttpResponse<TableWorkItemRes>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-					expect(response.body)
-						.withContext('Expect the response body to be the item with null values')
-						.toEqual(workItem);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			).subscribe((response: HttpResponse<TableWorkItemRes>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(response.body)
+					.withContext('Expect the response body to be the item with null values')
+					.toEqual(workItem);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uri}/update`);
 			expect(req.request.method)
@@ -505,16 +480,11 @@ describe('WorkService', () => {
 			service.deleteItem(
 				token,
 				id
-			).subscribe(
-				(response: HttpResponse<{ }>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			).subscribe((response: HttpResponse<{ }>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uri}/delete/${id}`);
 			expect(req.request.method)

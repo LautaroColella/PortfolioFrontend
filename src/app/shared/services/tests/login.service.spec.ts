@@ -34,25 +34,20 @@ describe('LoginService', () => {
 			password: 		string = 'password',
 			token:			string = 'Bearer random generated jwt';
 
-			service.login(email, password).subscribe(
-				(response: HttpResponse<string>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-					expect(typeof response.body)
-						.withContext('Expect the response body to be a string')
-						.toBe('string');
-					expect(response.body)
-						.withContext('Expect the response body to start with "Bearer "')
-						.toMatch(/^Bearer /);
-					expect(response.body)
-						.withContext('Expect the response body to equal the JWT')
-						.toEqual(token);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			service.login(email, password).subscribe((response: HttpResponse<string>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(typeof response.body)
+					.withContext('Expect the response body to be a string')
+					.toBe('string');
+				expect(response.body)
+					.withContext('Expect the response body to start with "Bearer "')
+					.toMatch(/^Bearer /);
+				expect(response.body)
+					.withContext('Expect the response body to equal the JWT')
+					.toEqual(token);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uri}/login`);
 			expect(req.request.method)
@@ -71,16 +66,11 @@ describe('LoginService', () => {
 		it('should send an auth DELETE request', () => {
 			const token: string = 'Bearer random json web token';
 
-			service.checkToken(token).subscribe(
-				(response: HttpResponse<{}>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			service.checkToken(token).subscribe((response: HttpResponse<{}>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uri}/about_item/check_token`);
 			expect(req.request.method)

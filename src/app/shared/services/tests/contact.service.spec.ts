@@ -141,31 +141,26 @@ describe('ContactService', () => {
 		it('should send a GET request to specific item and return it', () => {
 			const id: number = 1;
 
-			service.getItem(id).subscribe(
-				(response: HttpResponse<TableContactItemRes>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-					expect(typeof response.body)
-						.withContext('Expect the response body to be an object')
-						.toBe('object');
-					expect(response.body)
-						.withContext('Expect the response object to match the interface')
-						.toEqual(
-							jasmine.objectContaining({
-								id: jasmine.any(Number),
-								name: jasmine.any(String),
-								account: jasmine.any(String),
-								link: jasmine.any(String),
-								image_uri: jasmine.any(String),
-								image_alt: jasmine.any(String)
-							})
-						);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			service.getItem(id).subscribe((response: HttpResponse<TableContactItemRes>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(typeof response.body)
+					.withContext('Expect the response body to be an object')
+					.toBe('object');
+				expect(response.body)
+					.withContext('Expect the response object to match the interface')
+					.toEqual(
+						jasmine.objectContaining({
+							id: jasmine.any(Number),
+							name: jasmine.any(String),
+							account: jasmine.any(String),
+							link: jasmine.any(String),
+							image_uri: jasmine.any(String),
+							image_alt: jasmine.any(String)
+						})
+					);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uriCi}/${id}`);
 			expect(req.request.method)
@@ -205,19 +200,14 @@ describe('ContactService', () => {
 				contactItem.name,
 				contactItem.account,
 				contactItem.itemData
-			).subscribe(
-				(response: HttpResponse<TableContactItemRes>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-					expect(response.body)
-						.withContext('Expect the response body to be the item with id')
-						.toEqual(contactItem);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			).subscribe((response: HttpResponse<TableContactItemRes>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(response.body)
+					.withContext('Expect the response body to be the item with id')
+					.toEqual(contactItem);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uriCi}/add`);
 			expect(req.request.method)
@@ -268,19 +258,14 @@ describe('ContactService', () => {
 				contactItem.name,
 				contactItem.account,
 				contactItem.itemData
-			).subscribe(
-				(response: HttpResponse<TableContactItemRes>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-					expect(response.body)
-						.withContext('Expect the response body to be the item with id')
-						.toEqual(contactItem);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			).subscribe((response: HttpResponse<TableContactItemRes>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(response.body)
+					.withContext('Expect the response body to be the item with id')
+					.toEqual(contactItem);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uriCi}/add`);
 			expect(req.request.method)
@@ -335,19 +320,14 @@ describe('ContactService', () => {
 				contactItem.name,
 				contactItem.account,
 				contactItem.itemData
-			).subscribe(
-				(response: HttpResponse<TableContactItemRes>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-					expect(response.body)
-						.withContext('Expect the response body to be the item')
-						.toEqual(contactItem);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			).subscribe((response: HttpResponse<TableContactItemRes>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(response.body)
+					.withContext('Expect the response body to be the item')
+					.toEqual(contactItem);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uriCi}/update`);
 			expect(req.request.method)
@@ -400,19 +380,14 @@ describe('ContactService', () => {
 				contactItem.name,
 				contactItem.account,
 				contactItem.itemData
-			).subscribe(
-				(response: HttpResponse<TableContactItemRes>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-					expect(response.body)
-						.withContext('Expect the response body to be the item with null values')
-						.toEqual(contactItem);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			).subscribe((response: HttpResponse<TableContactItemRes>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(response.body)
+					.withContext('Expect the response body to be the item with null values')
+					.toEqual(contactItem);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uriCi}/update`);
 			expect(req.request.method)
@@ -456,16 +431,11 @@ describe('ContactService', () => {
 			service.deleteItem(
 				token,
 				id
-			).subscribe(
-				(response: HttpResponse<{ }>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			).subscribe((response: HttpResponse<{ }>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uriCi}/delete/${id}`);
 			expect(req.request.method)
@@ -489,13 +459,263 @@ describe('ContactService', () => {
 			req.flush({});
 		});
 	});
-	
 
-/*
+
 	describe('getMessage()', () => {
-		it('', () => {
+		it('should send a GET request and return the specific message', () => {
+			const token: string = 'Bearer random generated jwt',
+			id: number = 1;
 
+			service.getMessage(
+				token,
+				id
+			).subscribe((response: HttpResponse<TableContactMessageRes>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(typeof response.body)
+					.withContext('Expect the response body to be an object')
+					.toBe('object');
+				expect(response.body)
+					.withContext('Expect the response object to match the interface')
+					.toEqual(
+						jasmine.objectContaining({
+							id: jasmine.any(Number),
+							subject: jasmine.any(String),
+							message: jasmine.any(String),
+							reply: jasmine.any(String),
+							date: jasmine.any(String),
+							readed: jasmine.any(Boolean)
+						})
+					);
+			});
+
+			const req = httpTestingController.expectOne(`${service.uriCm}/${id}`);
+			expect(req.request.method)
+				.withContext('Expect the request method to be GET')
+				.toBe('GET');
+
+			const hasAuthHeader: boolean = req.request.headers.has('Authorization');
+			expect(hasAuthHeader)
+				.withContext('Expect the request headers to have Authorization')
+				.toBe(true);
+
+			if(hasAuthHeader){
+				expect(req.request.headers.get('Authorization'))
+					.withContext('Expect the request Authorization header to start with "Bearer "')
+					.toMatch(/^Bearer /);
+				expect(req.request.headers.get('Authorization'))
+					.withContext('Expect the request Authorization header to match the token')
+					.toEqual(token);
+			}
+
+			req.flush(
+				{
+					id: 1,
+					subject: "Valid data",
+					message: "Valid data",
+					reply: "Valid data",
+					date: "Valid data",
+					readed: false
+				}
+			);
 		});
 	});
-*/
+
+
+	describe('getMessages()', () => {
+		it('should send a GET request and return the messages', () => {
+			const token: string = 'Bearer random generated jwt',
+			responseMessages = [
+				{
+					id: 1,
+					subject: 'Valid data',
+					message: 'Valid data',
+					reply: 'Valid data',
+					date: 'Valid data',
+					readed: false
+				},
+				{
+					id: 2,
+					subject: 'Valid data',
+					message: 'Valid data',
+					reply: 'Valid data',
+					date: 'Valid data',
+					readed: false
+				}
+			];
+
+			service.getMessages(token).subscribe((response: HttpResponse<TableContactMessageRes[]>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(Array.isArray(response.body))
+					.withContext('Expect the response body to be an array')
+					.toBe(true);
+				expect(response.body)
+					.withContext('Expect the response objects to match the interface')
+					.toContain(
+						jasmine.objectContaining({
+							id: jasmine.any(Number),
+							subject: jasmine.any(String),
+							message: jasmine.any(String),
+							reply: jasmine.any(String),
+							date: jasmine.any(String),
+							readed: jasmine.any(Boolean)
+						})
+					);
+			});
+
+			const req = httpTestingController.expectOne(service.uriCm);
+			expect(req.request.method)
+				.withContext('Expect the request method to be GET')
+				.toBe('GET');
+
+			req.flush(responseMessages);
+		});
+	});
+
+
+	describe('createMessage()', () => {
+		it('should send a POST request and return the created message', () => {
+			const contactMessage = {
+				id: 1,
+				subject: 'Valid data',
+				message: 'Valid data',
+				reply: 'Valid data',
+				date: 'Valid data',
+				readed: false
+			};
+
+			service.createMessage(
+				contactMessage.subject,
+				contactMessage.message,
+				contactMessage.reply,
+				contactMessage.date
+			).subscribe((response: HttpResponse<TableContactMessageRes>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(response.body)
+					.withContext('Expect the response body to be the message')
+					.toEqual(contactMessage);
+			});
+
+			const req = httpTestingController.expectOne(`${service.uriCm}/add`);
+			expect(req.request.method)
+				.withContext('Expect the request method to be POST')
+				.toBe('POST');
+			expect(req.request.body)
+				.withContext('Expect the request body to be the message')
+				.toEqual({
+					subject: contactMessage.subject,
+					message: contactMessage.message,
+					reply: contactMessage.reply,
+					date: contactMessage.date,
+					readed: contactMessage.readed
+				});
+
+			req.flush(contactMessage);
+		});
+	});
+
+
+	describe('deleteMessage()', () => {
+		it('should send a DELETE request', () => {
+			const token: string = 'Bearer random generated jwt',
+			id: number = 1;
+
+			service.deleteMessage(
+				token,
+				id
+			).subscribe((response: HttpResponse<{ }>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+			});
+
+			const req = httpTestingController.expectOne(`${service.uriCm}/delete/${id}`);
+			expect(req.request.method)
+				.withContext('Expect the request method to be DELETE')
+				.toBe('DELETE');
+
+			const hasAuthHeader: boolean = req.request.headers.has('Authorization');
+			expect(hasAuthHeader)
+				.withContext('Expect the request headers to have Authorization')
+				.toBe(true);
+
+			if(hasAuthHeader){
+				expect(req.request.headers.get('Authorization'))
+					.withContext('Expect the request Authorization header to start with "Bearer "')
+					.toMatch(/^Bearer /);
+				expect(req.request.headers.get('Authorization'))
+					.withContext('Expect the request Authorization header to match the token')
+					.toEqual(token);
+			}
+
+			req.flush({});
+		});
+	});
+
+
+	describe('changeMessageRead()', () => {
+		it('should send a PUT request and return the new message', () => {
+			const token: string = 'Bearer random generated jwt',
+			contactMessage = {
+				id: 1,
+				subject: 'Valid data',
+				message: 'Valid data',
+				reply: 'Valid data',
+				date: 'Valid data',
+				readed: false
+			};
+
+			service.changeMessageRead(
+				token,
+				contactMessage
+			).subscribe((response: HttpResponse<TableContactMessageRes>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(response.body)
+					.withContext('Expect the response body to equal the message with the readed variable toggled')
+					.toEqual({
+						id: contactMessage.id,
+						subject: contactMessage.subject,
+						message: contactMessage.message,
+						reply: contactMessage.reply,
+						date: contactMessage.date,
+						readed: true
+					});
+			});
+
+			const req = httpTestingController.expectOne(`${service.uriCm}/update`);
+			expect(req.request.method)
+				.withContext('Expect the request method to be PUT')
+				.toBe('PUT');
+
+			const hasAuthHeader: boolean = req.request.headers.has('Authorization');
+			expect(hasAuthHeader)
+				.withContext('Expect the request headers to have Authorization')
+				.toBe(true);
+
+			if(hasAuthHeader){
+				expect(req.request.headers.get('Authorization'))
+					.withContext('Expect the request Authorization header to start with "Bearer "')
+					.toMatch(/^Bearer /);
+				expect(req.request.headers.get('Authorization'))
+					.withContext('Expect the request Authorization header to match the token')
+					.toEqual(token);
+			}
+
+			req.flush({
+				id: contactMessage.id,
+				subject: contactMessage.subject,
+				message: contactMessage.message,
+				reply: contactMessage.reply,
+				date: contactMessage.date,
+				readed: true
+			});
+		});
+	});
 });

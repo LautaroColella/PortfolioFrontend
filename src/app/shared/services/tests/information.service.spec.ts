@@ -135,22 +135,17 @@ describe('InformationService', () => {
 				infoItem.id,
 				infoItem.name,
 				infoItem.information
-			).subscribe(
-				(response: HttpResponse<TableInfoRes>) => {
-					expect(response.status)
-						.withContext('Expect the response status to be 200')
-						.toBe(200);
-					expect(typeof response.body)
-						.withContext('Expect the response body to be an object')
-						.toBe('object');
-					expect(response.body)
-						.withContext('Expect the response object to match the information item')
-						.toEqual(infoItem);
-				},
-				(error: HttpResponse<HttpErrorResponse>) => {
-					fail('Expected success response, but received error response');
-				}
-			);
+			).subscribe((response: HttpResponse<TableInfoRes>) => {
+				expect(response.status)
+					.withContext('Expect the response status to be 200')
+					.toBe(200);
+				expect(typeof response.body)
+					.withContext('Expect the response body to be an object')
+					.toBe('object');
+				expect(response.body)
+					.withContext('Expect the response object to match the information item')
+					.toEqual(infoItem);
+			});
 
 			const req = httpTestingController.expectOne(`${service.uri}/update`);
 			expect(req.request.method)
