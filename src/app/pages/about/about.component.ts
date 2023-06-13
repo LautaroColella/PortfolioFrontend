@@ -157,6 +157,8 @@ export class AboutComponent implements OnInit,AfterViewInit {
 				title: foundItem.name,
 				description: foundItem.description
 			};
+			const htmlLabel: HTMLElement | null = document.getElementsByTagName('html')[0];
+			if (htmlLabel) htmlLabel.scrollTop = 0;
 
 			const myItem: HTMLElement | null = document.getElementById(`itemImage_${itemId}`);
 			myItem?.classList.add('selectedItem');
