@@ -7,20 +7,23 @@ import {
 	HttpResponse,
 	HttpErrorResponse
 } from '@angular/common/http';
-import { AboutService } from '@@shared/services/about.service';
-import { TableAboutItemRes } from '@@shared/interfaces/tableAboutItemRes.interface';
+import { ContactService } from '@@shared/services/contact.service';
+import {
+	TableContactItemRes,
+	TableContactMessageRes
+} from '@@shared/interfaces/tableContactRes.interface';
 
-describe('AboutService', () => {
-	let service: AboutService;
+describe('ContactService', () => {
+	let service: ContactService;
 	let httpTestingController: HttpTestingController;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
 			imports: [HttpClientTestingModule],
-			providers: [AboutService]
+			providers: [ContactService]
 		});
 
-		service = TestBed.inject(AboutService);
+		service = TestBed.inject(ContactService);
 		httpTestingController = TestBed.inject(HttpTestingController);
 	});
 
@@ -28,25 +31,22 @@ describe('AboutService', () => {
 		httpTestingController.verify();
 	});
 
+
 	describe('getItems()', () => {
 		it('should send a GET request, return the items and update the cached items', () => {
 			const responseItems = [
 				{
 					id: 1,
-					item_type: 1,
 					name: 'Valid data',
-					date: 'Valid data',
-					description: 'Valid data',
+					account: 'Valid data',
 					link: 'Valid data',
 					image_uri: 'Valid data',
 					image_alt: 'Valid data'
 				},
 				{
 					id: 2,
-					item_type: 1,
 					name: 'Valid data',
-					date: 'Valid data',
-					description: 'Valid data',
+					account: 'Valid data',
 					link: 'Valid data',
 					image_uri: 'Valid data',
 					image_alt: 'Valid data'
@@ -55,7 +55,7 @@ describe('AboutService', () => {
 
 			spyOn(service, 'getItems').and.callThrough();
 
-			service.getItems().subscribe((response: HttpResponse<TableAboutItemRes[]>) => {
+			service.getItems().subscribe((response: HttpResponse<TableContactItemRes[]>) => {
 				expect(response.status)
 					.withContext('Expect the response status to be 200')
 					.toBe(200);
@@ -67,10 +67,11 @@ describe('AboutService', () => {
 					.toContain(
 						jasmine.objectContaining({
 							id: jasmine.any(Number),
-							item_type: jasmine.any(Number),
 							name: jasmine.any(String),
-							date: jasmine.any(String),
-							description: jasmine.any(String)
+							account: jasmine.any(String),
+							link: jasmine.any(String),
+							image_uri: jasmine.any(String),
+							image_alt: jasmine.any(String)
 						})
 					);
 			});
@@ -82,7 +83,7 @@ describe('AboutService', () => {
 				.withContext('Expect the service to be called only once')
 				.toHaveBeenCalledTimes(1);
 
-			const req = httpTestingController.expectOne(service.uri);
+			const req = httpTestingController.expectOne(service.uriCi);
 			expect(req.request.method)
 				.withContext('Expect the request method to be GET')
 				.toBe('GET');
@@ -97,20 +98,16 @@ describe('AboutService', () => {
 			const cachedItems = [
 				{
 					id: 1,
-					item_type: 1,
 					name: 'Valid data',
-					date: 'Valid data',
-					description: 'Valid data',
+					account: 'Valid data',
 					link: 'Valid data',
 					image_uri: 'Valid data',
 					image_alt: 'Valid data'
 				},
 				{
 					id: 2,
-					item_type: 1,
 					name: 'Valid data',
-					date: 'Valid data',
-					description: 'Valid data',
+					account: 'Valid data',
 					link: 'Valid data',
 					image_uri: 'Valid data',
 					image_alt: 'Valid data'
@@ -120,7 +117,7 @@ describe('AboutService', () => {
 
 			spyOn(service, 'getItems').and.callThrough();
 
-			service.getItems().subscribe((response: HttpResponse<TableAboutItemRes[]>) => {
+			service.getItems().subscribe((response: HttpResponse<TableContactItemRes[]>) => {
 				expect(response.body)
 					.withContext('Expect the response body to be the cached items')
 					.toEqual(cachedItems);
@@ -145,7 +142,7 @@ describe('AboutService', () => {
 			const id: number = 1;
 
 			service.getItem(id).subscribe(
-				(response: HttpResponse<TableAboutItemRes>) => {
+				(response: HttpResponse<TableContactItemRes>) => {
 					expect(response.status)
 						.withContext('Expect the response status to be 200')
 						.toBe(200);
@@ -157,10 +154,11 @@ describe('AboutService', () => {
 						.toEqual(
 							jasmine.objectContaining({
 								id: jasmine.any(Number),
-								item_type: jasmine.any(Number),
 								name: jasmine.any(String),
-								date: jasmine.any(String),
-								description: jasmine.any(String)
+								account: jasmine.any(String),
+								link: jasmine.any(String),
+								image_uri: jasmine.any(String),
+								image_alt: jasmine.any(String)
 							})
 						);
 				},
@@ -169,7 +167,7 @@ describe('AboutService', () => {
 				}
 			);
 
-			const req = httpTestingController.expectOne(`${service.uri}/${id}`);
+			const req = httpTestingController.expectOne(`${service.uriCi}/${id}`);
 			expect(req.request.method)
 				.withContext('Expect the request method to be GET')
 				.toBe('GET');
@@ -177,10 +175,8 @@ describe('AboutService', () => {
 			req.flush(
 				{
 					id: 1,
-					item_type: 1,
 					name: 'Valid data',
-					date: 'Valid data',
-					description: 'Valid data',
+					account: 'Valid data',
 					link: 'Valid data',
 					image_uri: 'Valid data',
 					image_alt: 'Valid data'
@@ -193,12 +189,10 @@ describe('AboutService', () => {
 	describe('createItem()', () => {
 		it('should send a POST request and return the created item', () => {
 			const token: string = 'Bearer random generated jwt',
-			aboutItem = {
+			contactItem = {
 				id: 1,
-				item_type: 1,
-				name: 'Random data',
-				date: 'Random data',
-				description: 'Random data',
+				name: 'Valid data',
+				account: 'Valid data',
 				itemData: {
 					link: 'Random data',
 					image_uri: 'Random data',
@@ -208,39 +202,35 @@ describe('AboutService', () => {
 
 			service.createItem(
 				token,
-				aboutItem.item_type,
-				aboutItem.name,
-				aboutItem.date,
-				aboutItem.description,
-				aboutItem.itemData
+				contactItem.name,
+				contactItem.account,
+				contactItem.itemData
 			).subscribe(
-				(response: HttpResponse<TableAboutItemRes>) => {
+				(response: HttpResponse<TableContactItemRes>) => {
 					expect(response.status)
 						.withContext('Expect the response status to be 200')
 						.toBe(200);
 					expect(response.body)
 						.withContext('Expect the response body to be the item with id')
-						.toEqual(aboutItem);
+						.toEqual(contactItem);
 				},
 				(error: HttpResponse<HttpErrorResponse>) => {
 					fail('Expected success response, but received error response');
 				}
 			);
 
-			const req = httpTestingController.expectOne(`${service.uri}/add`);
+			const req = httpTestingController.expectOne(`${service.uriCi}/add`);
 			expect(req.request.method)
 				.withContext('Expect the request method to be POST')
 				.toBe('POST');
 			expect(req.request.body)
 				.withContext('Expect the request body to be the item')
 				.toEqual({
-					item_type: aboutItem.item_type,
-					name: aboutItem.name,
-					date: aboutItem.date,
-					description: aboutItem.description,
-					link: aboutItem.itemData.link,
-					image_uri: aboutItem.itemData.image_uri,
-					image_alt: aboutItem.itemData.image_alt
+					name: contactItem.name,
+					account: contactItem.account,
+					link: contactItem.itemData.link,
+					image_uri: contactItem.itemData.image_uri,
+					image_alt: contactItem.itemData.image_alt
 				});
 
 			const hasAuthHeader: boolean = req.request.headers.has('Authorization');
@@ -257,17 +247,15 @@ describe('AboutService', () => {
 					.toEqual(token);
 			}
 
-			req.flush(aboutItem);
+			req.flush(contactItem);
 		});
 
 		it('should send a POST request and return the created item with optional values as null', () => {
 			const token: string = 'Bearer random generated jwt',
-			aboutItem = {
+			contactItem = {
 				id: 1,
-				item_type: 1,
-				name: 'Random data',
-				date: 'Random data',
-				description: 'Random data',
+				name: 'Valid data',
+				account: 'Valid data',
 				itemData: {
 					link: undefined,
 					image_uri: undefined,
@@ -277,36 +265,32 @@ describe('AboutService', () => {
 
 			service.createItem(
 				token,
-				aboutItem.item_type,
-				aboutItem.name,
-				aboutItem.date,
-				aboutItem.description,
-				aboutItem.itemData
+				contactItem.name,
+				contactItem.account,
+				contactItem.itemData
 			).subscribe(
-				(response: HttpResponse<TableAboutItemRes>) => {
+				(response: HttpResponse<TableContactItemRes>) => {
 					expect(response.status)
 						.withContext('Expect the response status to be 200')
 						.toBe(200);
 					expect(response.body)
 						.withContext('Expect the response body to be the item with id')
-						.toEqual(aboutItem);
+						.toEqual(contactItem);
 				},
 				(error: HttpResponse<HttpErrorResponse>) => {
 					fail('Expected success response, but received error response');
 				}
 			);
 
-			const req = httpTestingController.expectOne(`${service.uri}/add`);
+			const req = httpTestingController.expectOne(`${service.uriCi}/add`);
 			expect(req.request.method)
 				.withContext('Expect the request method to be POST')
 				.toBe('POST');
 			expect(req.request.body)
 				.withContext('Expect the request body to be the item with null values')
 				.toEqual({
-					item_type: aboutItem.item_type,
-					name: aboutItem.name,
-					date: aboutItem.date,
-					description: aboutItem.description,
+					name: contactItem.name,
+					account: contactItem.account,
 					link: null,
 					image_uri: null,
 					image_alt: null
@@ -326,19 +310,18 @@ describe('AboutService', () => {
 					.toEqual(token);
 			}
 
-			req.flush(aboutItem);
+			req.flush(contactItem);
 		});
 	});
+
 
 	describe('updateItem()', () => {
 		it('should send a PUT request and return the new item', () => {
 			const token: string = 'Bearer random generated jwt',
-			aboutItem = {
+			contactItem = {
 				id: 1,
-				item_type: 1,
-				name: 'Random data',
-				date: 'Random data',
-				description: 'Random data',
+				name: 'Valid data',
+				account: 'Valid data',
 				itemData: {
 					link: 'Random data',
 					image_uri: 'Random data',
@@ -348,41 +331,37 @@ describe('AboutService', () => {
 
 			service.updateItem(
 				token,
-				aboutItem.id,
-				aboutItem.item_type,
-				aboutItem.name,
-				aboutItem.date,
-				aboutItem.description,
-				aboutItem.itemData
+				contactItem.id,
+				contactItem.name,
+				contactItem.account,
+				contactItem.itemData
 			).subscribe(
-				(response: HttpResponse<TableAboutItemRes>) => {
+				(response: HttpResponse<TableContactItemRes>) => {
 					expect(response.status)
 						.withContext('Expect the response status to be 200')
 						.toBe(200);
 					expect(response.body)
 						.withContext('Expect the response body to be the item')
-						.toEqual(aboutItem);
+						.toEqual(contactItem);
 				},
 				(error: HttpResponse<HttpErrorResponse>) => {
 					fail('Expected success response, but received error response');
 				}
 			);
 
-			const req = httpTestingController.expectOne(`${service.uri}/update`);
+			const req = httpTestingController.expectOne(`${service.uriCi}/update`);
 			expect(req.request.method)
 				.withContext('Expect the request method to be PUT')
 				.toBe('PUT');
 			expect(req.request.body)
 				.withContext('Expect the request body to be the item')
 				.toEqual({
-					id: aboutItem.id,
-					item_type: aboutItem.item_type,
-					name: aboutItem.name,
-					date: aboutItem.date,
-					description: aboutItem.description,
-					link: aboutItem.itemData.link,
-					image_uri: aboutItem.itemData.image_uri,
-					image_alt: aboutItem.itemData.image_alt
+					id: contactItem.id,
+					name: contactItem.name,
+					account: contactItem.account,
+					link: contactItem.itemData.link,
+					image_uri: contactItem.itemData.image_uri,
+					image_alt: contactItem.itemData.image_alt
 				});
 
 			const hasAuthHeader: boolean = req.request.headers.has('Authorization');
@@ -399,17 +378,15 @@ describe('AboutService', () => {
 					.toEqual(token);
 			}
 
-			req.flush(aboutItem);
+			req.flush(contactItem);
 		});
 
 		it('should send a PUT request and return the new item with optional values as null', () => {
 			const token: string = 'Bearer random generated jwt',
-			aboutItem = {
+			contactItem = {
 				id: 1,
-				item_type: 1,
-				name: 'Random data',
-				date: 'Random data',
-				description: 'Random data',
+				name: 'Valid data',
+				account: 'Valid data',
 				itemData: {
 					link: undefined,
 					image_uri: undefined,
@@ -419,38 +396,34 @@ describe('AboutService', () => {
 
 			service.updateItem(
 				token,
-				aboutItem.id,
-				aboutItem.item_type,
-				aboutItem.name,
-				aboutItem.date,
-				aboutItem.description,
-				aboutItem.itemData
+				contactItem.id,
+				contactItem.name,
+				contactItem.account,
+				contactItem.itemData
 			).subscribe(
-				(response: HttpResponse<TableAboutItemRes>) => {
+				(response: HttpResponse<TableContactItemRes>) => {
 					expect(response.status)
 						.withContext('Expect the response status to be 200')
 						.toBe(200);
 					expect(response.body)
 						.withContext('Expect the response body to be the item with null values')
-						.toEqual(aboutItem);
+						.toEqual(contactItem);
 				},
 				(error: HttpResponse<HttpErrorResponse>) => {
 					fail('Expected success response, but received error response');
 				}
 			);
 
-			const req = httpTestingController.expectOne(`${service.uri}/update`);
+			const req = httpTestingController.expectOne(`${service.uriCi}/update`);
 			expect(req.request.method)
 				.withContext('Expect the request method to be PUT')
 				.toBe('PUT');
 			expect(req.request.body)
 				.withContext('Expect the request body to be the item')
 				.toEqual({
-					id: aboutItem.id,
-					item_type: aboutItem.item_type,
-					name: aboutItem.name,
-					date: aboutItem.date,
-					description: aboutItem.description,
+					id: contactItem.id,
+					name: contactItem.name,
+					account: contactItem.account,
 					link: null,
 					image_uri: null,
 					image_alt: null
@@ -470,7 +443,7 @@ describe('AboutService', () => {
 					.toEqual(token);
 			}
 
-			req.flush(aboutItem);
+			req.flush(contactItem);
 		});
 	});
 
@@ -494,7 +467,7 @@ describe('AboutService', () => {
 				}
 			);
 
-			const req = httpTestingController.expectOne(`${service.uri}/delete/${id}`);
+			const req = httpTestingController.expectOne(`${service.uriCi}/delete/${id}`);
 			expect(req.request.method)
 				.withContext('Expect the request method to be DELETE')
 				.toBe('DELETE');
@@ -516,4 +489,13 @@ describe('AboutService', () => {
 			req.flush({});
 		});
 	});
+	
+
+/*
+	describe('getMessage()', () => {
+		it('', () => {
+
+		});
+	});
+*/
 });
