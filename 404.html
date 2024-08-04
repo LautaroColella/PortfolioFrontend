@@ -5,8 +5,8 @@
   </head>
   <body>
     <script type="text/javascript">
-      var path = window.location.pathname;
-      window.location.href = "/" + path;
+      var path = window.location.host + window.location.pathname;
+      window.location.href = path;
     </script>
   </body>
 </html>
