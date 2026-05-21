@@ -4,5 +4,5 @@ staticPort: 1668
 reloadPort: 2667
 hostName: localhost
 projectName: portfolio
-handle404: ''
+handle404: ""
 allowErrorCollect: false
