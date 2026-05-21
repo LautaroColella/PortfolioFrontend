@@ -4,10 +4,5 @@ staticPort: 1668
 reloadPort: 2667
 hostName: localhost
 projectName: portfolio
-homeFolder: >-
-  C:\Users\usuario\Desktop\l\learn\portfolio\YP_PortfolioFrontend\PortfolioFrontend
-distFolder: ./dist/portfolio
-outDir: >-
-  C:\Users\usuario\Desktop\l\learn\portfolio\YP_PortfolioFrontend\PortfolioFrontend\dist\portfolio
 handle404: ''
 allowErrorCollect: false

@@ -1,15 +1,44 @@
-<body>
+<div class="page-container">
   <app-loader></app-loader>
   <section class="container content">
-    <div id="liveAlertPlaceholder" style="position: absolute; z-index: 9; width: 100%;"></div>
+    <div
+      id="liveAlertPlaceholder"
+      style="position: absolute; z-index: 9; width: 100%"
+    ></div>
     <section id="contact">
       <section class="form">
         <h2>Send a message!</h2>
         <form onsubmit="return false;" #contactForm>
-          <input type="text" placeholder="Subject" class="subject" minlength="3" maxlength="128" required #subject />
-          <textarea placeholder="Message" class="message" minlength="3" maxlength="512" required #message></textarea>
-          <input type="text" placeholder="Reply to" minlength="3" maxlength="128" required #replyto />
-          <input type="submit" value="Send" (click)="createMessage(subject.value, message.value, replyto.value)" />
+          <input
+            type="text"
+            placeholder="Subject"
+            class="subject"
+            minlength="3"
+            maxlength="128"
+            required
+            #subject
+          />
+          <textarea
+            placeholder="Message"
+            class="message"
+            minlength="3"
+            maxlength="512"
+            required
+            #message
+          ></textarea>
+          <input
+            type="text"
+            placeholder="Reply to"
+            minlength="3"
+            maxlength="128"
+            required
+            #replyto
+          />
+          <input
+            type="submit"
+            value="Send"
+            (click)="createMessage(subject.value, message.value, replyto.value)"
+          />
         </form>
       </section>
       <section class="social">
@@ -17,16 +46,16 @@
         <div class="socialItems">
           <div class="socialItem" *ngFor="let item of socialItems">
             <div class="itemId" *ngIf="isLogged">
-              <p>#{{item.id}}</p>
+              <p>#{{ item.id }}</p>
             </div>
             <a *ngIf="!item.link">
-              <strong>{{item.name}}</strong>
-              <img src="{{item.image_uri}}" alt="{{item.image_alt}}" />
-              <p class="bot">{{item.account}}</p>
+              <strong>{{ item.name }}</strong>
+              <img src="{{ item.image_uri }}" alt="{{ item.image_alt }}" />
+              <p class="bot">{{ item.account }}</p>
             </a>
-            <a href="{{item.link}}" target="_blank" *ngIf="item.link">
-              <strong>{{item.name}}</strong>
-              <img src="{{item.image_uri}}" alt="{{item.image_alt}}" />
+            <a href="{{ item.link }}" target="_blank" *ngIf="item.link">
+              <strong>{{ item.name }}</strong>
+              <img src="{{ item.image_uri }}" alt="{{ item.image_alt }}" />
             </a>
           </div>
         </div>
@@ -34,4 +63,4 @@
     </section>
   </section>
   <app-navbar></app-navbar>
-</body>
+</div>

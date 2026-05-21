@@ -1,4 +1,4 @@
-<body>
+<div class="page-container">
   <app-loader></app-loader>
   <section class="container content">
     <div id="liveAlertPlaceholder" style="position: absolute; z-index: 9; width: 100%;"></div>
@@ -24,7 +24,7 @@
                 <td><h4><strong>{{project.name}}</strong></h4></td>
               </tr>
               <tr>
-                <td><h5><span *ngIf="isLogged">#{{project.id}} | </span>{{project.date}}</h5></td>          
+                <td><h5><span *ngIf="isLogged">#{{project.id}} | </span>{{project.date}}</h5></td>
               </tr>
             </table>
             <div class="allTechnologies">
@@ -47,4 +47,4 @@
     </section>
   </section>
   <app-navbar></app-navbar>
-</body>
+</div>

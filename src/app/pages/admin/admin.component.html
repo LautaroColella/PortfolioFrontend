@@ -1,12 +1,15 @@
-<body>
+<div class="page-container">
   <app-loader></app-loader>
   <section class="container content">
-    <div id="liveAlertPlaceholder" style="position: absolute; z-index: 9; width: 100%;"></div>
+    <div
+      id="liveAlertPlaceholder"
+      style="position: absolute; z-index: 9; width: 100%"
+    ></div>
     <section #admin id="admin">
       <h1>Portfolio information</h1>
       <section class="adminHome" id="adminHome">
         <div class="slideButton">
-          <div class="slideButtonSecond" (click)='viewClick("Home")'>
+          <div class="slideButtonSecond" (click)="viewClick('Home')">
             <h2>Home</h2>
             <i class="fa-solid fa-caret-down fa-2x arrowDown"></i>
             <i class="fa-solid fa-caret-up fa-2x arrowUp"></i>
@@ -18,7 +21,7 @@
       </section>
       <section class="adminWork" id="adminWork">
         <div class="slideButton">
-          <div class="slideButtonSecond" (click)='viewClick("Work")'>
+          <div class="slideButtonSecond" (click)="viewClick('Work')">
             <h2>Work</h2>
             <i class="fa-solid fa-caret-down fa-2x arrowDown"></i>
             <i class="fa-solid fa-caret-up fa-2x arrowUp"></i>
@@ -30,7 +33,7 @@
       </section>
       <section class="adminAbout" id="adminAbout">
         <div class="slideButton">
-          <div class="slideButtonSecond" (click)='viewClick("About")'>
+          <div class="slideButtonSecond" (click)="viewClick('About')">
             <h2>About</h2>
             <i class="fa-solid fa-caret-down fa-2x arrowDown"></i>
             <i class="fa-solid fa-caret-up fa-2x arrowUp"></i>
@@ -42,7 +45,7 @@
       </section>
       <section class="adminContact" id="adminContact">
         <div class="slideButton">
-          <div class="slideButtonSecond" (click)='viewClick("Contact")'>
+          <div class="slideButtonSecond" (click)="viewClick('Contact')">
             <h2>Contact</h2>
             <i class="fa-solid fa-caret-down fa-2x arrowDown"></i>
             <i class="fa-solid fa-caret-up fa-2x arrowUp"></i>
@@ -54,7 +57,7 @@
       </section>
       <section class="admin_user" id="admin_user">
         <div class="slideButton">
-          <div class="slideButtonSecond" (click)='viewClick("User")'>
+          <div class="slideButtonSecond" (click)="viewClick('User')">
             <h2>Users</h2>
             <i class="fa-solid fa-caret-down fa-2x arrowDown"></i>
             <i class="fa-solid fa-caret-up fa-2x arrowUp"></i>
@@ -65,15 +68,43 @@
         </div>
       </section>
       <div class="floatingButtons">
-        <i class="fa-solid fa-caret-up fa-2x fButton" (click)='bGoto("top")' title="Go top"></i>
-        <i class="fa-solid fa-house-chimney fButton" (click)='bGoto("appHome")' title="Go to home page"></i>
-        <i class="fa-solid fa-code fButton" (click)='bGoto("appWork")' title="Go to work page"></i>
-        <i class="fa-solid fa-user fButton" (click)='bGoto("appAbout")' title="Go to about page"></i>
-        <i class="fa-solid fa-comments fButton" (click)='bGoto("appContact")' title="Go to contact page"></i>
-        <i class="fa-solid fa-users fButton" (click)='bGoto("appUser")' title="Go to users page"></i>
-        <i class="fa-solid fa-right-from-bracket fButton fButtonLast" (click)="bLogout()" title="Logout"></i>
+        <i
+          class="fa-solid fa-caret-up fa-2x fButton"
+          (click)="bGoto('top')"
+          title="Go top"
+        ></i>
+        <i
+          class="fa-solid fa-house-chimney fButton"
+          (click)="bGoto('appHome')"
+          title="Go to home page"
+        ></i>
+        <i
+          class="fa-solid fa-code fButton"
+          (click)="bGoto('appWork')"
+          title="Go to work page"
+        ></i>
+        <i
+          class="fa-solid fa-user fButton"
+          (click)="bGoto('appAbout')"
+          title="Go to about page"
+        ></i>
+        <i
+          class="fa-solid fa-comments fButton"
+          (click)="bGoto('appContact')"
+          title="Go to contact page"
+        ></i>
+        <i
+          class="fa-solid fa-users fButton"
+          (click)="bGoto('appUser')"
+          title="Go to users page"
+        ></i>
+        <i
+          class="fa-solid fa-right-from-bracket fButton fButtonLast"
+          (click)="bLogout()"
+          title="Logout"
+        ></i>
       </div>
     </section>
   </section>
   <app-navbar></app-navbar>
-</body>
+</div>
