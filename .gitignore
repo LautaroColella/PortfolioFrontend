@@ -11,7 +11,4 @@
 
 # Specific
 .editorconfig
-.scully/
 scully.log
-scully.portfolio.config.ts
-/src/assets/scully-routes.json
